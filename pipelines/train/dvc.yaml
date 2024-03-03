@@ -1,0 +1,44 @@
+vars:
+- PIPELINE_DIR: pipelines/train
+
+stages:
+  extract_data:
+    cmd: python src/stages/extract_data.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+    - ${PIPELINE_DIR}/params.yaml:
+      - extract_data
+    deps:
+    - src/stages/extract_data.py
+    - ${data.raw_data}
+    outs:
+    - ${data.train_data}
+    - ${data.test_data}
+
+  train:
+    cmd: python src/stages/train.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+    - ${PIPELINE_DIR}/params.yaml:
+      - train
+    deps:
+    - src/stages/train.py
+    - ${data.train_data}
+    outs:
+    - ${train.model_path}
+
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=${PIPELINE_DIR}/params.yaml --pdir=${PIPELINE_DIR}
+    wdir: ../..
+    params:
+    - ${PIPELINE_DIR}/params.yaml:
+      - evaluate
+    deps:
+    - src/stages/evaluate.py
+    - ${data.test_data}
+    - ${data.train_data}
+    - ${train.model_path}
+    outs:
+    - ${data.reference_data}
+metrics:
+- ../../reports/train/metrics.json

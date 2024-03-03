@@ -1,0 +1,29 @@
+base:
+  reports_dir: reports/train
+  logging_level: INFO
+
+data:
+  raw_data: data/train.txt
+  train_data: data/train.csv
+  test_data: data/test.csv
+  reference_data: data/reference_data.csv
+  
+  target_col: INCOME
+  prediction_col: prediction
+  numerical_features: ['temp', 'atemp', 'hum', 'windspeed', 'hr', 'weekday']
+  categorical_features: ['season', 'holiday', 'workingday']
+  test_size_ratio: 0.2
+
+train:
+  depth: 4
+  iterations: 200
+  learning_rate: 0.1
+  model_path: models/model.joblib
+
+extract_data:
+
+evaluate:
+  model_performance_path: model_performance.html
+  metrics_path: metrics.json
+
+  
