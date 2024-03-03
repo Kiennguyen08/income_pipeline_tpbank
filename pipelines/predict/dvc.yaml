@@ -1,0 +1,31 @@
+vars:
+- PIPELINE_DIR: pipelines/predict
+
+stages:
+  preprocessing:
+    cmd: python src/stages/preprocess.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+    - ${PIPELINE_DIR}/params.yaml:
+      - base
+      - data
+    deps:
+    - src/stages/preprocess.py
+    - ${data.raw_data}
+    outs:
+    - ${data.test_data}
+
+  predict:
+    cmd: python src/stages/predict.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+      - ${PIPELINE_DIR}/params.yaml:
+        - base
+        - data
+        - predict
+    deps:
+      - src/stages/predict.py
+      - ${data.test_data}
+      - ${predict.model_path}
+    outs:
+      - ${predict.predictions_dir}/prediction.csv

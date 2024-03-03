@@ -1,0 +1,77 @@
+schema: '2.0'
+stages:
+  extract_data:
+    cmd: python src/stages/extract_data.py --config=pipelines/train/params.yaml
+    deps:
+    - path: data/train.txt
+      hash: md5
+      md5: 38c7aeebf386eced2c986e905028d860
+      size: 2526892
+    - path: src/stages/extract_data.py
+      hash: md5
+      md5: 115449f1ef57419df3afe4422bd77511
+      size: 2268
+    params:
+      pipelines/train/params.yaml:
+        extract_data:
+    outs:
+    - path: data/train.csv
+      hash: md5
+      md5: 954e5caeb216768e59aebafc8ce1e25e
+      size: 1997591
+    - path: data/val.csv
+      hash: md5
+      md5: 30ba3b6353fdcf4a85f816a40eeda5be
+      size: 499541
+  train:
+    cmd: python src/stages/train.py --config=pipelines/train/params.yaml
+    deps:
+    - path: data/train.csv
+      hash: md5
+      md5: 954e5caeb216768e59aebafc8ce1e25e
+      size: 1997591
+    - path: src/stages/train.py
+      hash: md5
+      md5: 8b6d56095fd9ac7bec852652a5ed2afa
+      size: 1798
+    params:
+      pipelines/train/params.yaml:
+        train:
+          depth: 4
+          iterations: 200
+          learning_rate: 0.1
+          model_path: models/model.joblib
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 705de949e042825bb2d172e7da45ac0e
+      size: 73588
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=pipelines/train/params.yaml --pdir=pipelines/train
+    deps:
+    - path: data/train.csv
+      hash: md5
+      md5: 954e5caeb216768e59aebafc8ce1e25e
+      size: 1997591
+    - path: data/val.csv
+      hash: md5
+      md5: 30ba3b6353fdcf4a85f816a40eeda5be
+      size: 499541
+    - path: models/model.joblib
+      hash: md5
+      md5: 705de949e042825bb2d172e7da45ac0e
+      size: 73588
+    - path: src/stages/evaluate.py
+      hash: md5
+      md5: 65ef653ca8f9263b25c4cedb7698e537
+      size: 3936
+    params:
+      pipelines/train/params.yaml:
+        evaluate:
+          model_performance_path: model_performance.html
+          metrics_path: metrics.json
+    outs:
+    - path: data/reference_data.csv
+      hash: md5
+      md5: bdac3ea019a9e38caa1f4c7cbda7b170
+      size: 1134445

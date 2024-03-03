@@ -1,0 +1,59 @@
+schema: '2.0'
+stages:
+  predict:
+    cmd: python src/stages/predict.py --config=pipelines/predict/params.yaml
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: 687459f072a7c6c40811788454c47cd9
+      size: 1447529
+    - path: models/model.joblib
+      hash: md5
+      md5: 1d813432229da43a126d01147eb7e48e
+      size: 73871
+    - path: src/stages/predict.py
+      hash: md5
+      md5: bb4778a064ea1bfcd63bb545f5694cbd
+      size: 1880
+    params:
+      pipelines/predict/params.yaml:
+        base:
+          logging_level: INFO
+        data:
+          raw_data: data/test.txt
+          test_data: data/test.csv
+          target_col: INCOME
+          prediction_col: prediction
+        predict:
+          model_path: models/model.joblib
+          predictions_dir: data/predictions
+    outs:
+    - path: data/predictions/prediction.csv
+      hash: md5
+      md5: 92eacc375ec38cce9d48faa189cfe458
+      size: 837064
+  preprocessing:
+    cmd: python src/stages/preprocess.py --config=pipelines/predict/params.yaml
+    deps:
+    - path: data/test.txt
+      hash: md5
+      md5: eaade801643eaef3904aec977633fd62
+      size: 827062
+    - path: src/stages/preprocess.py
+      hash: md5
+      md5: 9b7cc92a4e9fbef07ab4348e2321e0b6
+      size: 2328
+    params:
+      pipelines/predict/params.yaml:
+        base:
+          logging_level: INFO
+        data:
+          raw_data: data/test.txt
+          test_data: data/test.csv
+          target_col: INCOME
+          prediction_col: prediction
+    outs:
+    - path: data/test.csv
+      hash: md5
+      md5: 687459f072a7c6c40811788454c47cd9
+      size: 1447529

@@ -5,9 +5,11 @@ from typing import Dict, List, Text
 from catboost import CatBoostClassifier
 
 import joblib
+import numpy as np
 import pandas as pd
 import yaml
-from sklearn import ensemble
+
+from utils import _preprocessing
 
 
 def train(config_path: Text) -> None:
@@ -28,7 +30,11 @@ def train(config_path: Text) -> None:
 
     logging.info("Load train data")
     train_data_path: Path = Path(config["data"]["train_data"])
+    numerical_features: List[Text] = config["data"]["numerical_features"]
+    categorical_features: List[Text] = config["data"]["categorical_features"]
     train_data: pd.DataFrame = pd.read_csv(train_data_path)
+    train_data = _preprocessing(train_data, numerical_features, categorical_features)
+
     logging.info("Train model")
     classifier = CatBoostClassifier(
         depth=config["train"]["depth"],
@@ -38,7 +44,7 @@ def train(config_path: Text) -> None:
     logging.info(f"Cols: {train_data.columns}")
 
     classifier.fit(
-        X=train_data[train_data.columns[:-1]],
+        X=train_data[numerical_features + categorical_features],
         y=train_data[target_col],
     )
 

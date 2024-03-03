@@ -5,13 +5,13 @@ base:
 data:
   raw_data: data/train.txt
   train_data: data/train.csv
-  test_data: data/test.csv
+  val_data: data/val.csv
   reference_data: data/reference_data.csv
   
   target_col: INCOME
   prediction_col: prediction
-  numerical_features: ['temp', 'atemp', 'hum', 'windspeed', 'hr', 'weekday']
-  categorical_features: ['season', 'holiday', 'workingday']
+  numerical_features: ['AGE', 'EDUCATIONAL-NUM', 'CAPITAL-GAIN', 'CAPITAL-LOSS', 'HOURS-PER-WEEK']
+  categorical_features: ['WORKCLASS', 'EDUCATION', 'MARITAL-STATUS', 'OCCUPATION', 'RELATIONSHIP', 'GENDER']
   test_size_ratio: 0.2
 
 train:

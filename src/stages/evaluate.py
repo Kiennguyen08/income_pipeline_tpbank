@@ -12,6 +12,8 @@ from evidently import ColumnMapping
 from evidently.metric_preset import ClassificationPreset
 from evidently.report import Report
 
+from utils import _preprocessing
+
 
 def evaluate(config_path: Text, pdir: Text) -> None:
     """Train model.
@@ -35,23 +37,28 @@ def evaluate(config_path: Text, pdir: Text) -> None:
 
     logging.info("Load data")
     train_data_path: Path = Path(config["data"]["train_data"])
-    test_data_path: Path = Path(config["data"]["test_data"])
+    val_data_path: Path = Path(config["data"]["val_data"])
+    numerical_features: List[Text] = config["data"]["numerical_features"]
+    categorical_features: List[Text] = config["data"]["categorical_features"]
     train_data: pd.DataFrame = pd.read_csv(train_data_path).reset_index(drop=True)
-    test_data: pd.DataFrame = pd.read_csv(test_data_path).reset_index(drop=True)
+    val_data: pd.DataFrame = pd.read_csv(val_data_path).reset_index(drop=True)
+    train_data = _preprocessing(train_data, numerical_features, categorical_features)
+    val_data = _preprocessing(val_data, numerical_features, categorical_features)
 
     logging.info("Load model")
     model_path: Path = Path(config["train"]["model_path"])
     model = joblib.load(model_path)
 
-    logging.info("Get predictions to TEST data")
+    logging.info("Get predictions to VALIDATION data")
     train_prediction = model.predict(train_data[train_data.columns[:-1]])
-    test_prediction = model.predict(test_data[test_data.columns[:-1]])
+    val_prediction = model.predict(val_data[val_data.columns[:-1]])
     train_prediction = [int(x) for x in train_prediction]
-    test_prediction = [int(x) for x in test_prediction]
+    val_prediction = [int(x) for x in val_prediction]
 
     logging.info("Prepare datasets for monitoring")
-    test_data["prediction"] = test_prediction
+    val_data["prediction"] = val_prediction
     train_data["prediction"] = train_prediction
+
     reference_data = train_data.sample(frac=0.3)
 
     logging.info("Prepare column_mapping object for Evidently reports")
@@ -65,7 +72,7 @@ def evaluate(config_path: Text, pdir: Text) -> None:
     model_performance_report = Report(metrics=[ClassificationPreset()])
     model_performance_report.run(
         reference_data=reference_data,
-        current_data=test_data,
+        current_data=val_data,
         column_mapping=column_mapping,
     )
 
@@ -90,7 +97,7 @@ def evaluate(config_path: Text, pdir: Text) -> None:
 
     logging.info("Save reference data")
     ref_data_path = Path(config["data"]["reference_data"])
-    reference_data.to_csv(ref_data_path)
+    reference_data.to_csv(ref_data_path, index=None)
     logging.info(f"Saved reference data to to {ref_data_path}")
 
 
