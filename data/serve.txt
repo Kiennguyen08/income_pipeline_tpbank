@@ -1,4 +1,4 @@
-0,1,2,3,4,5,6,7,8,9,10,11,12
+ID,AGE,WORKCLASS,EDUCATION,EDUCATIONAL-NUM,MARITAL-STATUS,OCCUPATION,RELATIONSHIP,GENDER,CAPITAL-GAIN,CAPITAL-LOSS,HOURS-PER-WEEK,INCOME
 40000,44,Private,Some-college,10,Married-civ-spouse,Transport-moving,Husband,Male,0,0,40,0
 40001,27,Private,Bachelors,13,Never-married,Exec-managerial,Not-in-family,Male,0,0,40,0
 40002,27,Private,Bachelors,13,Never-married,Prof-specialty,Not-in-family,Male,13550,0,40,1

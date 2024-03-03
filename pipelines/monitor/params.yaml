@@ -1,0 +1,26 @@
+base:
+  logging_level: INFO
+
+data:
+  predict_data: data/serve.csv
+  target_col: INCOME
+  prediction_col: INCOME
+  numerical_features: ['AGE', 'EDUCATIONAL-NUM', 'CAPITAL-GAIN', 'CAPITAL-LOSS', 'HOURS-PER-WEEK']
+  categorical_features: ['WORKCLASS', 'EDUCATION', 'MARITAL-STATUS', 'OCCUPATION', 'RELATIONSHIP', 'GENDER']
+  batch_id: abcd1234
+  
+predict: 
+  model_path: models/model.joblib
+  predictions_dir: data/predictions
+
+monitoring:
+  reports_dir: reports
+  reference_data: data/reference_data.csv
+
+  # for monitor_model
+  model_performance_path: model_performance.html
+  target_drift_path: target_drift.html
+
+  # for monitor_data
+  data_drift_path: data_drift.html
+  data_quality_path: data_quality.html

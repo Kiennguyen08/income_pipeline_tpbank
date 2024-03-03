@@ -1,0 +1,33 @@
+
+vars:
+  - PIPELINE_DIR: pipelines/monitor
+
+stages:
+
+  monitor_data:
+    cmd: python src/stages/monitor_data.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+      - ${PIPELINE_DIR}/params.yaml:
+          - predict
+          - monitoring
+    deps:
+      - src/stages/monitor_data.py
+      - ${predict.predictions_dir}/prediction_${data.batch_id}.csv
+    outs:
+      - ${monitoring.reports_dir}/${data.batch_id}/${monitoring.data_drift_path}
+      - ${monitoring.reports_dir}/${data.batch_id}/${monitoring.data_quality_path}
+
+  monitor_model:
+    cmd: python src/stages/monitor_model.py --config=${PIPELINE_DIR}/params.yaml
+    wdir: ../..
+    params:
+      - ${PIPELINE_DIR}/params.yaml:
+          - predict
+          - monitoring
+    deps:
+      - src/stages/monitor_model.py
+      - ${predict.predictions_dir}/prediction_${data.batch_id}.csv
+    outs:
+      - ${monitoring.reports_dir}/${data.batch_id}/${monitoring.target_drift_path}
+      - ${monitoring.reports_dir}/${data.batch_id}/${monitoring.model_performance_path}

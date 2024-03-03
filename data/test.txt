@@ -1,4 +1,4 @@
-0,1,2,3,4,5,6,7,8,9,10,11
+ID,AGE,WORKCLASS,EDUCATION,EDUCATIONAL-NUM,MARITAL-STATUS,OCCUPATION,RELATIONSHIP,GENDER,CAPITAL-GAIN,CAPITAL-LOSS,HOURS-PER-WEEK
 30000,24,Local-gov,Some-college,10,Never-married,Protective-serv,Own-child,Female,0,0,40
 30001,51,Private,HS-grad,9,Married-civ-spouse,Machine-op-inspct,Husband,Male,0,0,40
 30002,31,Private,HS-grad,9,Divorced,Adm-clerical,Unmarried,Female,0,0,40

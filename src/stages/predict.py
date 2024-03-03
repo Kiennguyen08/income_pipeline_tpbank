@@ -26,6 +26,7 @@ def predict(config_path: Text) -> None:
 
     logging.info("Load metadata")
     prediction_col: Text = config["data"]["prediction_col"]
+    batch_id = config["data"]["batch_id"]
 
     logging.info("Load data")
     predict_data_path: Path = config["data"]["test_data"]
@@ -44,8 +45,8 @@ def predict(config_path: Text) -> None:
     logging.info("Save predictions")
     raw_test_path: Path = config["data"]["raw_data"]
     raw_test_df: pd.DataFrame = pd.read_csv(raw_test_path)
-    raw_test_df["12"] = [int(pred) for pred in predictions]
-    predictions_path: Path = predictions_dir / f"prediction.csv"
+    raw_test_df[prediction_col] = [int(pred) for pred in predictions]
+    predictions_path: Path = predictions_dir / f"prediction_{batch_id}.csv"
     raw_test_df.to_csv(predictions_path, index=False)
     logging.info(f"Save data with predictions to {predictions_path}")
 

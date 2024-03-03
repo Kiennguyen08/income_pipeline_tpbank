@@ -1,4 +1,4 @@
-0,1,2,3,4,5,6,7,8,9,10,11,12
+ID,AGE,WORKCLASS,EDUCATION,EDUCATIONAL-NUM,MARITAL-STATUS,OCCUPATION,RELATIONSHIP,GENDER,CAPITAL-GAIN,CAPITAL-LOSS,HOURS-PER-WEEK,INCOME
 0,25,Private,11th,7,Never-married,Machine-op-inspct,Own-child,Male,0,0,40,0
 1,38,Private,HS-grad,9,Married-civ-spouse,Farming-fishing,Husband,Male,0,0,50,0
 2,28,Local-gov,Assoc-acdm,12,Married-civ-spouse,Protective-serv,Husband,Male,0,0,40,1

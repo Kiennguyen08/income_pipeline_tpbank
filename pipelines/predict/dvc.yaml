@@ -28,4 +28,4 @@ stages:
       - ${data.test_data}
       - ${predict.model_path}
     outs:
-      - ${predict.predictions_dir}/prediction.csv
+      - ${predict.predictions_dir}/prediction_${data.batch_id}.csv

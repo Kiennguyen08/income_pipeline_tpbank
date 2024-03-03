@@ -38,7 +38,7 @@ def extract_data(config_path: Text) -> None:
     logging.info("Load raw data")
     raw_data_path: Dict = Path(config["data"]["raw_data"])
     raw_data: pd.DataFrame = pd.read_csv(raw_data_path)
-    raw_data = raw_data.drop(columns="0")
+    raw_data = raw_data.drop(columns="ID")
     raw_data.columns = [
         "AGE",
         "WORKCLASS",

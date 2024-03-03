@@ -42,6 +42,8 @@ def evaluate(config_path: Text, pdir: Text) -> None:
     categorical_features: List[Text] = config["data"]["categorical_features"]
     train_data: pd.DataFrame = pd.read_csv(train_data_path).reset_index(drop=True)
     val_data: pd.DataFrame = pd.read_csv(val_data_path).reset_index(drop=True)
+
+    origin_train_data = train_data.copy()
     train_data = _preprocessing(train_data, numerical_features, categorical_features)
     val_data = _preprocessing(val_data, numerical_features, categorical_features)
 
@@ -56,10 +58,16 @@ def evaluate(config_path: Text, pdir: Text) -> None:
     val_prediction = [int(x) for x in val_prediction]
 
     logging.info("Prepare datasets for monitoring")
-    val_data["prediction"] = val_prediction
-    train_data["prediction"] = train_prediction
+    val_data[prediction_col] = val_prediction
+    train_data[prediction_col] = train_prediction
 
-    reference_data = train_data.sample(frac=0.3)
+    reference_idx = train_data.sample(frac=0.3).index
+    logging.info("Save reference data")
+    ref_data_path = Path(config["data"]["reference_data"])
+    reference_data = origin_train_data.loc[reference_idx]
+    reference_data[prediction_col] = train_data[prediction_col].loc[reference_idx]
+    reference_data.to_csv(ref_data_path, index=None)
+    logging.info(f"Saved reference data to to {ref_data_path}")
 
     logging.info("Prepare column_mapping object for Evidently reports")
     column_mapping = ColumnMapping()
@@ -94,11 +102,6 @@ def evaluate(config_path: Text, pdir: Text) -> None:
         dvcyaml=f"{pdir}/dvc.yaml",
     ) as live:
         [live.log_metric(k, v, plot=False) for k, v in selected_metrics.items()]
-
-    logging.info("Save reference data")
-    ref_data_path = Path(config["data"]["reference_data"])
-    reference_data.to_csv(ref_data_path, index=None)
-    logging.info(f"Saved reference data to to {ref_data_path}")
 
 
 if __name__ == "__main__":

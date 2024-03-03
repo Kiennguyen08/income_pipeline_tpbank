@@ -5,12 +5,12 @@ stages:
     deps:
     - path: data/train.txt
       hash: md5
-      md5: 38c7aeebf386eced2c986e905028d860
-      size: 2526892
+      md5: 08615a41a77f94dc1d9566fbe5d6ae1f
+      size: 2527000
     - path: src/stages/extract_data.py
       hash: md5
-      md5: 115449f1ef57419df3afe4422bd77511
-      size: 2268
+      md5: 686215fd31294e78a98d4332613d9ef6
+      size: 2269
     params:
       pipelines/train/params.yaml:
         extract_data:
@@ -63,8 +63,8 @@ stages:
       size: 73588
     - path: src/stages/evaluate.py
       hash: md5
-      md5: 65ef653ca8f9263b25c4cedb7698e537
-      size: 3936
+      md5: e83aaffe60a1ec5730d3c3d7d9e77b5f
+      size: 4128
     params:
       pipelines/train/params.yaml:
         evaluate:
@@ -73,5 +73,5 @@ stages:
     outs:
     - path: data/reference_data.csv
       hash: md5
-      md5: bdac3ea019a9e38caa1f4c7cbda7b170
-      size: 1134445
+      md5: 65cb059e04d20500cb7ee3842bd42689
+      size: 613065

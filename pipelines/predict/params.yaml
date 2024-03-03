@@ -5,7 +5,8 @@ data:
   raw_data: data/test.txt
   test_data: data/test.csv
   target_col: INCOME
-  prediction_col: prediction
+  prediction_col: INCOME
+  batch_id: abcd1234
   
 predict: 
   model_path: models/model.joblib
