@@ -38,20 +38,9 @@ def preprocessing(config_path: str):
     label_encoder = LabelEncoder()
 
     df.replace("?", np.nan, inplace=True)
-    df.columns = [
-        "AGE",
-        "WORKCLASS",
-        "EDUCATION",
-        "EDUCATIONAL-NUM",
-        "MARITAL-STATUS",
-        "OCCUPATION",
-        "RELATIONSHIP",
-        "GENDER",
-        "CAPITAL-GAIN",
-        "CAPITAL-LOSS",
-        "HOURS-PER-WEEK",
-        "INCOME",
-    ]
+    df = df.drop(df.columns[0], axis=1)
+    if "INCOME" in df.columns:
+        df = df.drop("INCOME", axis=1)
     numerical_cols = df.select_dtypes(include=["int64", "float64"]).columns
     categorical_cols = df.select_dtypes(include=["object", "category"]).columns
     df[numerical_cols] = num_imputer.fit_transform(df[numerical_cols])
@@ -59,6 +48,7 @@ def preprocessing(config_path: str):
     for i in categorical_cols:
         df[i] = label_encoder.fit_transform(df[i])
     df = _minmax_scale_columns(df, df.columns[:-1])
+    print('df', df.head(5))
     logging.info("Save train_data and test_data data")
     df.to_csv(config["data"]["test_data"])
 
