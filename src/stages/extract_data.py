@@ -66,8 +66,8 @@ def extract_data(config_path: Text) -> None:
     print(type(train_data))
 
     logging.info("Save train_data and test_data data")
-    train_data.to_csv(config["data"]["train_data"])
-    test_data.to_csv(config["data"]["val_data"])
+    train_data.to_csv(config["data"]["train_data"], index=False)
+    test_data.to_csv(config["data"]["val_data"], index=False)
 
 
 if __name__ == "__main__":

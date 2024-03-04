@@ -6,7 +6,11 @@ from typing import Dict, Text
 import pandas as pd
 import yaml
 from evidently import ColumnMapping
-from evidently.metric_preset import TargetDriftPreset, RegressionPreset
+from evidently.metric_preset import (
+    TargetDriftPreset,
+    RegressionPreset,
+    ClassificationPreset,
+)
 from evidently.report import Report
 
 
@@ -50,7 +54,7 @@ def monitoring(config_path: Text) -> None:
     logging.info("Build Model Reports...")
 
     # Model performance report
-    model_performance_report = Report(metrics=[RegressionPreset()])
+    model_performance_report = Report(metrics=[ClassificationPreset()])
     model_performance_report.run(
         reference_data=reference, current_data=current, column_mapping=column_mapping
     )

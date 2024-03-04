@@ -40,7 +40,8 @@ def predict(config_path: Text) -> None:
     logging.info(model)
 
     logging.info("Make predictions")
-    predictions = model.predict(predict_data[predict_data.columns[:-1]])
+    # predictions = model.predict(predict_data[predict_data.columns[:-1]])
+    predictions = model.predict(predict_data)
 
     logging.info("Save predictions")
     raw_test_path: Path = config["data"]["raw_data"]
