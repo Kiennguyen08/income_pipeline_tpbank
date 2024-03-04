@@ -9,8 +9,8 @@ stages:
       size: 207732
     - path: models/model.joblib
       hash: md5
-      md5: f979767bae0115dc2ad07cda66a0b960
-      size: 73588
+      md5: acb09990b3edf2d0cd2fc530bd983a1a
+      size: 73268
     - path: src/stages/predict.py
       hash: md5
       md5: 4d8399a07d8ef78c71a4c8663040b1d8
@@ -33,7 +33,7 @@ stages:
     outs:
     - path: data/predictions/prediction_26bbf4fb-580a-468d-a816-800cdf990b00.csv
       hash: md5
-      md5: cc267ec718ddc4dc012c54f8fa9ce3aa
+      md5: 38aae3dcdc9d97995c23e82994d714b5
       size: 141190
   preprocessing:
     cmd: python src/stages/preprocess.py --config=pipelines/predict/params.yaml

@@ -45,45 +45,56 @@ def update_yaml(yaml_file, keys_to_update):
 def update_predict_config(**context):
     batch_id = f"{context['params']['batch_id']}"
     base_path = f"{context['params']['base_path']}"
+    depth = f"{context['params']['depth']}"
+    iterations = f"{context['params']['iterations']}"
+    learning_rate = f"{context['params']['learning_rate']}"
+    train_data_path = f"{context['params']['train_path']}"
+
     update_data = {
-        "data.predict_data": f"{base_path}/data/serve_{batch_id}.csv",
-        "data.batch_id": f"{batch_id}",
-        "predict.model_path": f"{base_path}/models/model.joblib",
-        "predict.predictions_dir": f"{base_path}/data/predictions",
-        "monitoring.report_dir": f"{base_path}/reports",
-        "monitoring.reference_data": f"{base_path}/data/reference_data.csv",
+        "base.reports_dir": f"{base_path}/reports/train_{batch_id}",
+        "data.raw_data": f"{train_data_path}",
+        "data.train_data": f"{base_path}/data/train.csv",
+        "data.val_data": f"{base_path}/data/val.csv",
+        "data.reference_data": f"{base_path}/data/reference_data.csv",
+        "train.depth": f"{depth}",
+        "train.iterations": f"{iterations}",
+        "train.learning_rate": f"{learning_rate}",
     }
     update_yaml(
-        f"{context['params']['base_path']}/pipelines/monitor/params.yaml", update_data
+        f"{context['params']['base_path']}/pipelines/train/params.yaml", update_data
     )
 
 
 with DAG(
-    "monitor_model_and_data",
+    "train_model",
     schedule_interval="@daily",
     default_args=default_args,
     catchup=False,
     params={
         "base_path": Param(os.getcwd(), type="string"),
         "batch_id": Param("", type="string"),
+        "depth": Param(4, type="number"),
+        "iterations": Param(200, type="number"),
+        "learning_rate": Param(0.01, type="number"),
+        "train_path": Param(f"{os.getcwd()}/data/train.txt", type="string"),
     },
 ) as dag:
-
+    # Define a PythonOperator that uses my_task function
     update_config = PythonOperator(
         task_id="update_config",
         python_callable=update_predict_config,
         provide_context=True,
     )
 
-    trigger_export_report = BashOperator(
-        task_id="run_prediction",
-        bash_command="cd {{ params.base_path }} && dvc repro {{ params.base_path }}/pipelines/monitor/dvc.yaml",
+    train = BashOperator(
+        task_id="run_trainning",
+        bash_command="cd {{ params.base_path }} && dvc exp run {{ params.base_path }}/pipelines/train/dvc.yaml",
         params={"base_path": dag.params["base_path"]},
     )
 
     export_report = BashOperator(
         task_id="export_report",
-        bash_command="cp -r {{ params.base_path }}/reports/{{ params.batch_id }} {{ params.batch_id }}",
+        bash_command="cp {{ params.base_path }}/data/reports/train_{{ params.batch_id }}/*.html .",
         params={
             "base_path": dag.params["base_path"],
             "batch_id": dag.params["batch_id"],
@@ -91,4 +102,4 @@ with DAG(
     )
 
     # Set task dependencies
-    update_config >> trigger_export_report >> export_report
+    update_config >> train >> export_report

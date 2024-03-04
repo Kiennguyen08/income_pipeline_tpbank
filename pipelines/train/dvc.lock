@@ -9,8 +9,8 @@ stages:
       size: 2527000
     - path: src/stages/extract_data.py
       hash: md5
-      md5: 71a6fabba2736749b820d57fdd414d6f
-      size: 2295
+      md5: 4013dd703a826a4c207b05fd630658eb
+      size: 2303
     params:
       pipelines/train/params.yaml:
         extract_data:
@@ -32,20 +32,20 @@ stages:
       size: 1862506
     - path: src/stages/train.py
       hash: md5
-      md5: 8b6d56095fd9ac7bec852652a5ed2afa
-      size: 1798
+      md5: f88dbc0f59a192c01d2b8e5ab8fc15f4
+      size: 1815
     params:
       pipelines/train/params.yaml:
         train:
-          depth: 4
-          iterations: 200
-          learning_rate: 0.1
+          depth: '4'
+          iterations: '200'
+          learning_rate: '0.01'
           model_path: models/model.joblib
     outs:
     - path: models/model.joblib
       hash: md5
-      md5: f979767bae0115dc2ad07cda66a0b960
-      size: 73588
+      md5: acb09990b3edf2d0cd2fc530bd983a1a
+      size: 73268
   evaluate:
     cmd: python src/stages/evaluate.py --config=pipelines/train/params.yaml --pdir=pipelines/train
     deps:
@@ -59,8 +59,8 @@ stages:
       size: 465734
     - path: models/model.joblib
       hash: md5
-      md5: f979767bae0115dc2ad07cda66a0b960
-      size: 73588
+      md5: acb09990b3edf2d0cd2fc530bd983a1a
+      size: 73268
     - path: src/stages/evaluate.py
       hash: md5
       md5: e83aaffe60a1ec5730d3c3d7d9e77b5f
@@ -73,5 +73,5 @@ stages:
     outs:
     - path: data/reference_data.csv
       hash: md5
-      md5: d88cee0d62f57da17c512e52f51dbc61
-      size: 573666
+      md5: 814d98d3bd5d2bb41cab05723a70a731
+      size: 573151

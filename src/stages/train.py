@@ -37,9 +37,9 @@ def train(config_path: Text) -> None:
 
     logging.info("Train model")
     classifier = CatBoostClassifier(
-        depth=config["train"]["depth"],
-        iterations=config["train"]["iterations"],
-        learning_rate=config["train"]["learning_rate"],
+        depth=int(config["train"]["depth"]),
+        iterations=int(config["train"]["iterations"]),
+        learning_rate=float(config["train"]["learning_rate"]),
     )
     logging.info(f"Cols: {train_data.columns}")
 
