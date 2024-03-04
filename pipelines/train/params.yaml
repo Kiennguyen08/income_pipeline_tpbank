@@ -9,7 +9,7 @@ data:
   reference_data: data/reference_data.csv
   
   target_col: INCOME
-  prediction_col: prediction
+  prediction_col: PREDICT
   numerical_features: ['AGE', 'EDUCATIONAL-NUM', 'CAPITAL-GAIN', 'CAPITAL-LOSS', 'HOURS-PER-WEEK']
   categorical_features: ['WORKCLASS', 'EDUCATION', 'MARITAL-STATUS', 'OCCUPATION', 'RELATIONSHIP', 'GENDER']
   test_size_ratio: 0.2

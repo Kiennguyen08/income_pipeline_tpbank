@@ -46,6 +46,7 @@ def predict(config_path: Text) -> None:
     logging.info("Save predictions")
     raw_test_path: Path = config["data"]["raw_data"]
     raw_test_df: pd.DataFrame = pd.read_csv(raw_test_path)
+    raw_test_df = raw_test_df.drop(raw_test_df.columns[0], axis=1)
     raw_test_df[prediction_col] = [int(pred) for pred in predictions]
     predictions_path: Path = predictions_dir / f"prediction_{batch_id}.csv"
     raw_test_df.to_csv(predictions_path, index=False)

@@ -2,20 +2,22 @@ base:
   logging_level: INFO
 
 data:
-  predict_data: data/serve.csv
+  predict_data: 
+    /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00.csv
   target_col: INCOME
-  prediction_col: INCOME
-  numerical_features: ['AGE', 'EDUCATIONAL-NUM', 'CAPITAL-GAIN', 'CAPITAL-LOSS', 'HOURS-PER-WEEK']
-  categorical_features: ['WORKCLASS', 'EDUCATION', 'MARITAL-STATUS', 'OCCUPATION', 'RELATIONSHIP', 'GENDER']
-  batch_id: abcd1234
-  
-predict: 
-  model_path: models/model.joblib
-  predictions_dir: data/predictions
+  prediction_col: PREDICT
+  numerical_features: [AGE, EDUCATIONAL-NUM, CAPITAL-GAIN, CAPITAL-LOSS, HOURS-PER-WEEK]
+  categorical_features: [WORKCLASS, EDUCATION, MARITAL-STATUS, OCCUPATION, RELATIONSHIP,
+    GENDER]
+  batch_id: 26bbf4fb-580a-468d-a816-800cdf990b00
+
+predict:
+  model_path: /Users/kiennguyen/interview/tpbank2/models/model.joblib
+  predictions_dir: /Users/kiennguyen/interview/tpbank2/data/predictions
 
 monitoring:
   reports_dir: reports
-  reference_data: data/reference_data.csv
+  reference_data: /Users/kiennguyen/interview/tpbank2/data/reference_data.csv
 
   # for monitor_model
   model_performance_path: model_performance.html
@@ -24,3 +26,4 @@ monitoring:
   # for monitor_data
   data_drift_path: data_drift.html
   data_quality_path: data_quality.html
+  report_dir: /Users/kiennguyen/interview/tpbank2/reports

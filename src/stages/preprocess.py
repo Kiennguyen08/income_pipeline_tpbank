@@ -29,6 +29,9 @@ def preprocessing(config_path: str):
         level=config["base"]["logging_level"], format="PREPROCESS: %(message)s"
     )
 
+    target_col: str = config["data"]["target_col"]
+    prediction_col: str = config["data"]["prediction_col"]
+
     logging.info("Load raw data")
     raw_data_path: Dict = Path(config["data"]["raw_data"])
     df: pd.DataFrame = pd.read_csv(raw_data_path)
@@ -39,8 +42,8 @@ def preprocessing(config_path: str):
 
     df.replace("?", np.nan, inplace=True)
     df = df.drop(df.columns[0], axis=1)
-    if "INCOME" in df.columns:
-        df = df.drop("INCOME", axis=1)
+    if target_col in df.columns:
+        df = df.drop(target_col, axis=1)
 
     numerical_cols = df.select_dtypes(include=["int64", "float64"]).columns
     categorical_cols = df.select_dtypes(include=["object", "category"]).columns
@@ -49,8 +52,7 @@ def preprocessing(config_path: str):
     for i in categorical_cols:
         df[i] = label_encoder.fit_transform(df[i])
     df = _minmax_scale_columns(df, df.columns[:-1])
-
-    logging.info("Save train_data and test_data data")
+    logging.info("Save data")
     df.to_csv(config["data"]["test_data"], index=False)
 
 

@@ -3,14 +3,14 @@ base:
 
 data:
   raw_data: 
-    /Users/kiennguyen/interview/tpbank2/data/serve_e5ecfa59-db10-4b81-bf8b-ad0a2593f71c.csv
+    /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00.csv
   test_data: 
-    /Users/kiennguyen/interview/tpbank2/data/serve_e5ecfa59-db10-4b81-bf8b-ad0a2593f71c.csv
+    /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00_processed.csv
   target_col: INCOME
-  prediction_col: INCOME
-  batch_id: e5ecfa59-db10-4b81-bf8b-ad0a2593f71c
+  prediction_col: PREDICT
+  batch_id: 26bbf4fb-580a-468d-a816-800cdf990b00
 
 predict:
-  model_path: models/model.joblib
-  predictions_dir: data/predictions
+  model_path: /Users/kiennguyen/interview/tpbank2/models/model.joblib
+  predictions_dir: /Users/kiennguyen/interview/tpbank2/data/predictions
 

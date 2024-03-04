@@ -43,7 +43,6 @@ def update_yaml(yaml_file, keys_to_update):
 
 
 def create_serving_data(**context):
-    print("HELLLO")
     batch_id = str(uuid.uuid4())
     df = pd.read_csv(f"{context['params']['base_path']}/data/serve.csv")
     sampled = df.sample(frac=0.2)
@@ -86,9 +85,7 @@ with DAG(
     schedule_interval="@daily",
     default_args=default_args,
     catchup=False,
-    params = {
-        "base_path": Param(os.getcwd(), type="string")
-    }
+    params={"base_path": Param(os.getcwd(), type="string")},
 ) as dag:
     # Define a PythonOperator that uses my_task function
     create_data = PythonOperator(
@@ -103,29 +100,17 @@ with DAG(
         provide_context=True,
     )
 
-    # predict = PythonOperator(
-    #     task_id="run_prediction",
-    #     python_callable=run_prediction,
-    #     provide_context=True,
-    # )
-    
     predict = BashOperator(
         task_id="run_prediction",
-        bash_command="dvc repro {{ params.base_path }}/pipelines/predict/dvc.yaml",
-        params={"base_path": dag.params["base_path"]}
-    )
-    
-    export_report = BashOperator(
-        task_id="export_report",
-        bash_command="cp {{ params.base_path }}/data/predictions/prediction_{{ ti.xcom_pull(key=\'batch_id\') }}.csv .",
-        params={"base_path": dag.params["base_path"]}
+        bash_command="cd {{ params.base_path }} && dvc repro {{ params.base_path }}/pipelines/predict/dvc.yaml",
+        params={"base_path": dag.params["base_path"]},
     )
 
-    # export_report = PythonOperator(
-    #     task_id="export_report",
-    #     python_callable=get_report_file,
-    #     provide_context=True,
-    # )
+    export_report = BashOperator(
+        task_id="export_report",
+        bash_command="cp {{ params.base_path }}/data/predictions/prediction_{{ ti.xcom_pull(key='batch_id') }}.csv .",
+        params={"base_path": dag.params["base_path"]},
+    )
 
     # Set task dependencies
     create_data >> update_config >> predict >> export_report

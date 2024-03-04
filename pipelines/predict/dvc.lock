@@ -3,59 +3,63 @@ stages:
   predict:
     cmd: python src/stages/predict.py --config=pipelines/predict/params.yaml
     deps:
-    - path: data/test.csv
+    - path: data/serve_26bbf4fb-580a-468d-a816-800cdf990b00_processed.csv
       hash: md5
-      md5: 687459f072a7c6c40811788454c47cd9
-      size: 1447529
+      md5: b0281a0645142be895074d848bb8bf54
+      size: 207732
     - path: models/model.joblib
       hash: md5
-      md5: 705de949e042825bb2d172e7da45ac0e
+      md5: f979767bae0115dc2ad07cda66a0b960
       size: 73588
     - path: src/stages/predict.py
       hash: md5
-      md5: c3665c2d31b1759f1de8ef817b425e80
-      size: 1943
+      md5: 4d8399a07d8ef78c71a4c8663040b1d8
+      size: 2058
     params:
       pipelines/predict/params.yaml:
         base:
           logging_level: INFO
         data:
-          raw_data: data/test.txt
-          test_data: data/test.csv
+          raw_data: 
+            /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00.csv
+          test_data: 
+            /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00_processed.csv
           target_col: INCOME
-          prediction_col: INCOME
-          batch_id: abcd1234
+          prediction_col: PREDICT
+          batch_id: 26bbf4fb-580a-468d-a816-800cdf990b00
         predict:
-          model_path: models/model.joblib
-          predictions_dir: data/predictions
+          model_path: /Users/kiennguyen/interview/tpbank2/models/model.joblib
+          predictions_dir: /Users/kiennguyen/interview/tpbank2/data/predictions
     outs:
-    - path: data/predictions/prediction_abcd1234.csv
+    - path: data/predictions/prediction_26bbf4fb-580a-468d-a816-800cdf990b00.csv
       hash: md5
-      md5: a1be9c4df56d08598e6bc1ccf7114420
-      size: 837172
+      md5: cc267ec718ddc4dc012c54f8fa9ce3aa
+      size: 141190
   preprocessing:
     cmd: python src/stages/preprocess.py --config=pipelines/predict/params.yaml
     deps:
-    - path: data/test.txt
+    - path: data/serve_26bbf4fb-580a-468d-a816-800cdf990b00.csv
       hash: md5
-      md5: f60258e30fdda22003f5377dea300d11
-      size: 827166
+      md5: 1c5c0fc3d85d96226a8b16af0cb70e02
+      size: 146235
     - path: src/stages/preprocess.py
       hash: md5
-      md5: 9b7cc92a4e9fbef07ab4348e2321e0b6
-      size: 2328
+      md5: cdbd4d62e51bbc8fc0a719c4f2c24cbe
+      size: 2251
     params:
       pipelines/predict/params.yaml:
         base:
           logging_level: INFO
         data:
-          raw_data: data/test.txt
-          test_data: data/test.csv
+          raw_data: 
+            /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00.csv
+          test_data: 
+            /Users/kiennguyen/interview/tpbank2/data/serve_26bbf4fb-580a-468d-a816-800cdf990b00_processed.csv
           target_col: INCOME
-          prediction_col: INCOME
-          batch_id: abcd1234
+          prediction_col: PREDICT
+          batch_id: 26bbf4fb-580a-468d-a816-800cdf990b00
     outs:
-    - path: data/test.csv
+    - path: data/serve_26bbf4fb-580a-468d-a816-800cdf990b00_processed.csv
       hash: md5
-      md5: 687459f072a7c6c40811788454c47cd9
-      size: 1447529
+      md5: b0281a0645142be895074d848bb8bf54
+      size: 207732
