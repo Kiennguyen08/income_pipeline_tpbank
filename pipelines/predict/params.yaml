@@ -2,13 +2,15 @@ base:
   logging_level: INFO
 
 data:
-  raw_data: data/test.txt
-  test_data: data/test.csv
+  raw_data: 
+    /Users/kiennguyen/interview/tpbank2/data/serve_e5ecfa59-db10-4b81-bf8b-ad0a2593f71c.csv
+  test_data: 
+    /Users/kiennguyen/interview/tpbank2/data/serve_e5ecfa59-db10-4b81-bf8b-ad0a2593f71c.csv
   target_col: INCOME
   prediction_col: INCOME
-  batch_id: abcd1234
-  
-predict: 
+  batch_id: e5ecfa59-db10-4b81-bf8b-ad0a2593f71c
+
+predict:
   model_path: models/model.joblib
   predictions_dir: data/predictions
-  
+
